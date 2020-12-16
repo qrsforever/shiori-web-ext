@@ -1,3 +1,4 @@
+// var ID = "0"
 async function getCurrentTab() {
     // Get active tabs in current window
     var tabs = await browser.tabs.query({
@@ -28,8 +29,12 @@ async function getPageContent(tab) {
     try {
         var content = await browser.tabs.sendMessage(tab.id, {type: "page-content"});
         return content;
-    } catch {
+    } catch(err) {
         return {};
+        // return {
+        //     title: "debug",
+        //     html: "Hello:" + ID + " vs " + tab.id + " err: " + err,
+        // };
     }
 }
 
@@ -281,6 +286,10 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Add handler for icon change
 function updateActiveTab()  {
     updateIcon().catch(err => console.error(err.message));
+    // browser.tabs.query({ currentWindow: true, active: true
+    // }).then((tabs) => {
+    //     ID = tabs[0].id
+    // });
 }
 
 browser.bookmarks.onCreated.addListener(updateActiveTab);
