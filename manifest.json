@@ -15,7 +15,12 @@
         "activeTab",
         "tabs",
         "storage",
-        "bookmarks"
+        "bookmarks",
+        "identity",
+        "nativeMessaging",
+        "clipboardWrite",
+        "contextMenus",
+        "downloads"
     ],
 
     "background": {

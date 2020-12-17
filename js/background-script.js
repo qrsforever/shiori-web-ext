@@ -1,4 +1,3 @@
-// var ID = "0"
 async function getCurrentTab() {
     // Get active tabs in current window
     var tabs = await browser.tabs.query({
@@ -29,12 +28,8 @@ async function getPageContent(tab) {
     try {
         var content = await browser.tabs.sendMessage(tab.id, {type: "page-content"});
         return content;
-    } catch(err) {
+    } catch {
         return {};
-        // return {
-        //     title: "debug",
-        //     html: "Hello:" + ID + " vs " + tab.id + " err: " + err,
-        // };
     }
 }
 
@@ -210,14 +205,17 @@ async function saveBookmark(tags) {
         }
     });
 
+    await browser.tabs.sendMessage(tab.id, {type: "console-log", message: "post ok!"});
+
     if (!response.ok) {
         var err = await response.text();
         throw new Error(err);
     }
 
+    // qrs: 去掉bookmark
     // Save to local bookmark
-    var pageTitle = content.title || tab.title;
-    await saveLocalBookmark(tab.url, pageTitle);
+    // var pageTitle = content.title || tab.title;
+    // await saveLocalBookmark(tab.url, pageTitle);
 
     return Promise.resolve();
 }
@@ -286,10 +284,6 @@ browser.runtime.onMessage.addListener((request, sender, sendResponse) => {
 // Add handler for icon change
 function updateActiveTab()  {
     updateIcon().catch(err => console.error(err.message));
-    // browser.tabs.query({ currentWindow: true, active: true
-    // }).then((tabs) => {
-    //     ID = tabs[0].id
-    // });
 }
 
 browser.bookmarks.onCreated.addListener(updateActiveTab);

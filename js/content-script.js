@@ -6,6 +6,8 @@ async function getPageContent() {
 		throw new Error("html content not available");
 	}
 
+    console.log('html length:' + html.length)
+
 	return {
 		title: title,
 		html: html.replace(/\s+/g, " "),
@@ -55,5 +57,9 @@ browser.runtime.onMessage.addListener(request => {
 		case "show-error":
 			return showError(request.message);
 			break;
+		case "console-log":
+            console.log("log:", request.message);
 	}
 });
+
+console.log('run content-script')
